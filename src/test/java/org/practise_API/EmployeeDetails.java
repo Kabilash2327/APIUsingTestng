@@ -12,7 +12,17 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+/**
+ * 
+ * @author Kabilesh
+ * API_practise
+ */
+
 public class EmployeeDetails implements EndpointforMethods {
+	
+	/**
+	 * Create using hardcode and verify assert
+	 */
 
 	@Test
 	public void tc01_createMethod_usingHardCode() {
@@ -30,6 +40,11 @@ public class EmployeeDetails implements EndpointforMethods {
 		Assert.assertEquals(response.statusCode(), post_statuscode, "Created");
 
 	}
+	
+	/**
+	 * Update using hardcode and verify assert
+	 */
+
 
 	@Test
 	public void tc02_updateEmployee() {
@@ -46,6 +61,11 @@ public class EmployeeDetails implements EndpointforMethods {
 		Assert.assertEquals(response.getStatusCode(), put_statuscode, "Updated");
 
 	}
+	
+	/**
+	 * Delete and verify assert
+	 */
+	
 
 	@Test
 	public void tc03_deleteEmployee() {
@@ -62,13 +82,18 @@ public class EmployeeDetails implements EndpointforMethods {
 
 	}
 
+	/**
+	 * Get using Bdd style
+	 */
 	@Test
 	public void tc04_bDD_getAll() {
 
 		given().baseUri("https://reqres.in/api/").when().get("users?page=2").prettyPrint();
 	}
 
-	@Test
+	
+	
+	@Test(enabled = false)
 	public void tc05_postData_jsonFile() {
 
 		File json_reader = new File("Files\\postdata.json");
@@ -78,17 +103,43 @@ public class EmployeeDetails implements EndpointforMethods {
 
 	}
 
+	/**
+	 * Basic auth-- to pass username and password to verify true 
+	 */
 	@Test
 	public void tc06_basic_Auth() {
 
-		given().baseUri("https://postman-echo.com").auth().basic("postman", "password").when().get("/basic-auth")
+		 given().baseUri("https://postman-echo.com").auth().basic("postman", "password").when().get("/basic-auth")
 				.prettyPrint();
-
+		
+       
 	}
+	
+	/**
+	 * Get method from GIT using bearer token
+	 */
 
 	@Test
 	public void tc07_bearer_Token() {
 
 		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT).when().get(GETUSERURL_FROM_GIT).prettyPrint();
 	}
+	
+	
+	/**
+	 * Create new repo in GIT using bearer token
+	 */
+	
+	@Test
+	public void tc08_Post_Repo() {
+		
+		File file = new File("Files\\postdata.json");
+		
+		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT)
+		.body(file).when().post(POSTUSERURL_FROM_GIT).then().statusCode(201).log().all();
+
+	}
+	
+	
+	
 }
