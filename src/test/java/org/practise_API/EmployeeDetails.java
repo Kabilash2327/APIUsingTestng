@@ -1,6 +1,7 @@
 package org.practise_API;
 
 import org.endpoints.EndpointforMethods;
+import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -109,22 +110,23 @@ public class EmployeeDetails implements EndpointforMethods {
 	@Test
 	public void tc06_basic_Auth() {
 
-		 given().baseUri("https://postman-echo.com").auth().basic("postman", "password").when().get("/basic-auth")
+		 String prettyPrint = given().baseUri("https://postman-echo.com").auth().basic("postman", "password").when().get("/basic-auth")
 				.prettyPrint();
-		
+		JSONObject jsonObject = new JSONObject();
        
 	}
 	
 	/**
-	 * Get method from GIT using bearer token
+	 * Get all repo from GIT
 	 */
 
 	@Test
-	public void tc07_bearer_Token() {
+	public void tc07_Get_all_repo() {
 
 		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT).when().get(GETUSERURL_FROM_GIT).prettyPrint();
 	}
 	
+
 	
 	/**
 	 * Create new repo in GIT using bearer token
@@ -133,13 +135,35 @@ public class EmployeeDetails implements EndpointforMethods {
 	@Test
 	public void tc08_Post_Repo() {
 		
-		File file = new File("Files\\postdata.json");
-		
-		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT)
-		.body(file).when().post(POSTUSERURL_FROM_GIT).then().statusCode(201).log().all();
+		File file = new File ("Files\\postdata.json");
+		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT).body(file).when().post(POSTUSERURL_FROM_GIT)
+		.then().statusCode(201).log().all();
+
 
 	}
 	
+	/**
+	 * Update the created repo in GIT using bearer token
+	 */
+	@Test
+	public void tc09_Patch_repo() {
+      
+		File file = new File("Files\\patchdata.json");
+		
+		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT)
+		.body(file).when().patch(PATCHUSERURL_FROM_GIT).then().statusCode(200).log().all();
+
+	}
+	/**
+	 * Delete the created repo in GIT using bearer token
+	 */
+	@Test
+	public void tc10_Delete_repo() {
+		 
+		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT)
+		.when().delete(DELETEUSERURL_FROM_GIT).then().assertThat().statusCode(204).log().all();
+
+	}
 	
 	
 }

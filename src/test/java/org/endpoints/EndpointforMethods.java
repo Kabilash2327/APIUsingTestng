@@ -17,7 +17,9 @@ public interface EndpointforMethods {
 	
 	
 	
-	public static String BEARERTOKEN_FROM_GIT = "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";
+	public static String BEARERTOKEN_FROM_GIT = "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";
+	
+	
 	
 	public static String GETUSERURL_FROM_GIT = "https://api.github.com/user/repos";
 	

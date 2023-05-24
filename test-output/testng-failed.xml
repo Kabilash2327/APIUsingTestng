@@ -5,7 +5,7 @@
     <classes>
       <class name="org.practise_API.EmployeeDetails">
         <methods>
-          <include name="tc06_basic_Auth"/>
+          <include name="tc08_Post_Repo"/>
         </methods>
       </class> <!-- org.practise_API.EmployeeDetails -->
     </classes>
