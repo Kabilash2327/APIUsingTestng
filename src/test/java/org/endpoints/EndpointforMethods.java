@@ -15,9 +15,11 @@ public interface EndpointforMethods {
 	public static String PATCHUSERURL = "https://reqres.in/api/users/2";
 	public static String DELETEUSERURL = "https://reqres.in/api/users/2";
 	
+	public static String PUTUSERURLforChaining = "https://reqres.in/api/users/";
+	public static String DELETEUSERURLforChaining = "https://reqres.in/api/users/";
 	
 	
-	public static String BEARERTOKEN_FROM_GIT = "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";
+	public static String BEARERTOKEN_FROM_GIT = "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";
 	
 	
 	
