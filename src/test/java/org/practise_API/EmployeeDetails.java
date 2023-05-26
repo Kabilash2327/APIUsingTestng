@@ -4,12 +4,22 @@ import org.apache.commons.io.FileUtils;
 import org.endpoints.EndpointforMethods;
 import org.hamcrest.MatcherAssert;
 import org.json.simple.JSONObject;
+import org.pojo.PersonalDetailsPojo;
+import org.pojo.PersonalDetailsPojoWrite;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.restassured.http.Method;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -153,11 +163,10 @@ public class EmployeeDetails implements EndpointforMethods {
 
 		given().header("Authorization", "Bearer " + BEARERTOKEN_FROM_GIT).when().delete(DELETEUSERURL_FROM_GIT).then()
 				.assertThat().statusCode(204).log().all();
-
 	}
 
 	/**
-	 * Schema validation in post method
+	 * Schema validation in post method in rest assured schema validator
 	 */
 	@Test
 	public void tc11_SchemaValidation() {
@@ -168,6 +177,11 @@ public class EmployeeDetails implements EndpointforMethods {
 				.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("tc11_schemavalidator.json")).log().all();
 
 	}
+	
+	/**
+	 * Schema validation throw hamcrest
+	 * @throws IOException
+	 */
 
 	@Test
 	public void tc12_SchemaValidation_in_hamcrest() throws IOException {
@@ -179,6 +193,10 @@ public class EmployeeDetails implements EndpointforMethods {
 		MatcherAssert.assertThat(readFileToString, JsonSchemaValidator.matchesJsonSchema(inputSchema));
 
 	}
+	
+	/**
+	 * request chaining post
+	 */
 
 	@Test
 	public void tc13_createuser_reqChaining() {
@@ -188,6 +206,10 @@ public class EmployeeDetails implements EndpointforMethods {
 		tc13_id = given().contentType("application/json").body(file).when().post(POSTUSERURL).jsonPath().getInt("id");
 
 	}
+	
+	/**
+	 * request chaining put
+	 */
 
 	@Test(dependsOnMethods = { "tc13_createuser_reqChaining" })
 	public void tc14_updateuser_chaining() {
@@ -199,10 +221,50 @@ public class EmployeeDetails implements EndpointforMethods {
 
 	}
 
+	/**
+	 * request chaining delete
+	 */
 	@Test(dependsOnMethods = { "tc14_updateuser_chaining" })
 	public void tc15_deleteuser_chaining() {
 
 		given().when().delete(DELETEUSERURLforChaining + tc13_id).then().statusCode(204).log().all();
 
 	}
+
+	/**
+	 * 25-05
+	 * 
+	 * @throws StreamReadException
+	 * @throws DatabindException
+	 * @throws IOException
+	 */
+
+	@Test
+	public void tc16_readTheObjPresent_in_JsonUsing_ObjectMapper()
+			throws StreamReadException, DatabindException, IOException {
+
+		File file = new File("src\\main\\resources\\tc16_personalDetails.json");
+		ObjectMapper objectMapper = new ObjectMapper();
+		PersonalDetailsPojo personalDetailsPojo = objectMapper.readValue(file, PersonalDetailsPojo.class);
+		System.out.println("The age which is present in the json is:" + personalDetailsPojo.getAge());
+		System.out.println("The name is which is present in the json is:" + personalDetailsPojo.getName());
+	}
+
+	/**
+	 * 25-05
+	 * @throws StreamWriteException
+	 * @throws DatabindException
+	 * @throws IOException
+	 */
+	@Test
+	public void tc17_writeTheobjPresent_in_JsonUsing_ObjectMapper()
+			throws StreamWriteException, DatabindException, IOException {
+
+		File file = new File("src\\main\\resources\\tc16_personalDetails.json");
+		ObjectMapper mapper = new ObjectMapper();
+		PersonalDetailsPojoWrite detailsPojoWrite = new PersonalDetailsPojoWrite(8764, "Kumar", "AB-ve", 32,
+				"Chennai");
+		mapper.writeValue(file, detailsPojoWrite);
+	}
+	
 }
