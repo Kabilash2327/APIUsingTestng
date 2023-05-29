@@ -5,7 +5,7 @@
     <classes>
       <class name="org.practise_API.DemoCyclos">
         <methods>
-          <include name="tc03_get_accounts_listdata"/>
+          <include name="tc07_get_ui_data"/>
         </methods>
       </class> <!-- org.practise_API.DemoCyclos -->
     </classes>
