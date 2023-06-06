@@ -36,7 +36,7 @@ public class HTTPMethods implements EndpointforMethods {
 		System.out.println(asPrettyString);
 		System.out.println(response.getTime());
 		Assert.assertEquals(statusCode, 200, "Verified the status code succesfully");
-
+		System.out.println("Get positive case method successfully executed");
 	}
 
 	@Test
